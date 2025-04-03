@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscription Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+        
+        .notification {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .success-icon {
+            color: #2e7d32;
+            margin-right: 8px;
+        }
+        
+        .close-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #757575;
+        }
+        
+        .unsubscribe-section {
+            background-color: white;
+            padding: 40px 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        h2 {
+            margin-top: 0;
+            color: #333;
+        }
+        
+        p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .unsubscribe-button {
+            background-color: #1a3547;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .unsubscribe-button:hover {
+            background-color: #142736;
+        }
+        
+        .subscribe-button {
+            background-color: #2e7d32;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .subscribe-button:hover {
+            background-color: #225f26;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Success notification for subscription -->
+        <div id="successNotification" class="notification">
+            <div>
+                <span class="success-icon">✓</span>
+                You have successfully subscribed
+            </div>
+            <button class="close-button" onclick="document.getElementById('successNotification').classList.add('hidden')">✕</button>
+        </div>
+        
+        <!-- Unsubscribe section -->
+        <div id="unsubscribeSection" class="unsubscribe-section">
+            <h2>Do you want to unsubscribe from our messages?</h2>
+            <p>You'll stop receiving messages from us.</p>
+            <button class="unsubscribe-button" onclick="handleUnsubscribe()">Unsubscribe</button>
+        </div>
+        
+        <!-- Subscribe section (initially hidden) -->
+        <div id="subscribeSection" class="unsubscribe-section hidden">
+            <h2>Subscribe to our messages</h2>
+            <p>Stay updated with our latest news and offers.</p>
+            <button class="subscribe-button" onclick="handleSubscribe()">Subscribe</button>
+        </div>
+    </div>
+
+    <script>
+        function handleUnsubscribe() {
+            // Hide unsubscribe section
+            document.getElementById('unsubscribeSection').classList.add('hidden');
+            // Show subscribe section
+            document.getElementById('subscribeSection').classList.remove('hidden');
+            // Hide success notification if it's visible
+            document.getElementById('successNotification').classList.add('hidden');
+            
+            // You could also add a toast notification here for unsubscribe confirmation
+            alert("You have been unsubscribed from our messages.");
+        }
+        
+        function handleSubscribe() {
+            // Hide subscribe section
+            document.getElementById('subscribeSection').classList.add('hidden');
+            // Show unsubscribe section
+            document.getElementById('unsubscribeSection').classList.remove('hidden');
+            // Show success notification
+            document.getElementById('successNotification').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
