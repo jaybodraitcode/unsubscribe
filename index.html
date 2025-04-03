@@ -92,12 +92,75 @@
         .hidden {
             display: none;
         }
+        
+        /* Toast notification styles */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .toast.show {
+            opacity: 1;
+        }
+        
+        /* Modal popup styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .modal-title {
+            margin-top: 0;
+            color: #2e7d32;
+        }
+        
+        .modal-button {
+            background-color: #2e7d32;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        
+        .modal-button:hover {
+            background-color: #225f26;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <!-- Success notification for subscription -->
-        <div id="successNotification" class="notification">
+        <div id="successNotification" class="notification hidden">
             <div>
                 <span class="success-icon">✓</span>
                 You have successfully subscribed
@@ -119,6 +182,20 @@
             <button class="subscribe-button" onclick="handleSubscribe()">Subscribe</button>
         </div>
     </div>
+    
+    <!-- Toast notification -->
+    <div id="toast" class="toast">
+        You have been unsubscribed from our messages.
+    </div>
+    
+    <!-- Modal popup for subscription confirmation -->
+    <div id="subscribeModal" class="modal">
+        <div class="modal-content">
+            <h3 class="modal-title">Subscription Confirmed!</h3>
+            <p>Thank you for subscribing to our messages. You'll now receive our latest updates and offers.</p>
+            <button class="modal-button" onclick="closeModal()">Close</button>
+        </div>
+    </div>
 
     <script>
         function handleUnsubscribe() {
@@ -129,8 +206,8 @@
             // Hide success notification if it's visible
             document.getElementById('successNotification').classList.add('hidden');
             
-            // You could also add a toast notification here for unsubscribe confirmation
-            alert("You have been unsubscribed from our messages.");
+            // Show toast notification
+            showToast();
         }
         
         function handleSubscribe() {
@@ -140,6 +217,35 @@
             document.getElementById('unsubscribeSection').classList.remove('hidden');
             // Show success notification
             document.getElementById('successNotification').classList.remove('hidden');
+            
+            // Show popup modal
+            showModal();
+        }
+        
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            
+            // Hide toast after 3 seconds
+            setTimeout(function() {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        function showModal() {
+            document.getElementById('subscribeModal').style.display = 'flex';
+        }
+        
+        function closeModal() {
+            document.getElementById('subscribeModal').style.display = 'none';
+        }
+        
+        // Close modal if user clicks outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('subscribeModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
         }
     </script>
 </body>
