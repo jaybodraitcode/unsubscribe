@@ -1,252 +1,323 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Subscription Management</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f5f5f5;
-        }
-        
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f5f5f5;
+      }
+
+      .container {
+        max-width: 500px;
+        width: 90%;
+        text-align: center;
+      }
+
+      .notification {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+        padding: 12px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .success-icon {
+        color: #2e7d32;
+        margin-right: 8px;
+      }
+
+      .close-button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #757575;
+      }
+
+      .unsubscribe-section {
+        background-color: white;
+        padding: 40px 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h2 {
+        margin-top: 0;
+        color: #333;
+      }
+
+      p {
+        color: #666;
+        margin-bottom: 30px;
+      }
+
+      .unsubscribe-button {
+        background-color: #1a3547;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      .unsubscribe-button:hover {
+        background-color: #142736;
+      }
+
+      .subscribe-button {
+        background-color: #2e7d32;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      .subscribe-button:hover {
+        background-color: #225f26;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      /* Toast notification styles */
+      .toast {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #333;
+        color: white;
+        padding: 16px 24px;
+        border-radius: 4px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .toast.show {
+        opacity: 1;
+      }
+
+      /* Modal popup styles */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1001;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .modal-content {
+        background-color: white;
+        padding: 30px;
+        border-radius: 8px;
+        max-width: 400px;
+        text-align: center;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .modal-title {
+        margin-top: 0;
+        color: #2e7d32;
+      }
+
+      .modal-button {
+        background-color: #2e7d32;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 20px;
+      }
+
+      .modal-button:hover {
+        background-color: #225f26;
+      }
+
+      /* Responsive adjustments for screens under 400px */
+      @media screen and (max-width: 400px) {
         .container {
-            max-width: 500px;
-            width: 90%;
-            text-align: center;
-        }
-        
-        .notification {
-            background-color: #e8f5e9;
-            color: #2e7d32;
-            padding: 12px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        
-        .success-icon {
-            color: #2e7d32;
-            margin-right: 8px;
-        }
-        
-        .close-button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: #757575;
+          width: 95%;
         }
         
         .unsubscribe-section {
-            background-color: white;
-            padding: 40px 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+          padding: 25px 15px;
         }
         
         h2 {
-            margin-top: 0;
-            color: #333;
+          font-size: 18px;
         }
         
         p {
-            color: #666;
-            margin-bottom: 30px;
+          font-size: 14px;
+          margin-bottom: 20px;
         }
         
-        .unsubscribe-button {
-            background-color: #1a3547;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        
-        .unsubscribe-button:hover {
-            background-color: #142736;
-        }
-        
+        .unsubscribe-button,
         .subscribe-button {
-            background-color: #2e7d32;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
+          font-size: 14px;
+          padding: 10px 20px;
         }
         
-        .subscribe-button:hover {
-            background-color: #225f26;
+        .notification {
+          padding: 10px;
+          font-size: 14px;
         }
         
-        .hidden {
-            display: none;
-        }
-        
-        /* Toast notification styles */
         .toast {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #333;
-            color: white;
-            padding: 16px 24px;
-            border-radius: 4px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .toast.show {
-            opacity: 1;
-        }
-        
-        /* Modal popup styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1001;
-            justify-content: center;
-            align-items: center;
+          font-size: 14px;
+          padding: 12px 18px;
         }
         
         .modal-content {
-            background-color: white;
-            padding: 30px;
-            border-radius: 8px;
-            max-width: 400px;
-            text-align: center;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+          padding: 20px;
+          width: 85%;
+          max-width: 320px;
         }
         
         .modal-title {
-            margin-top: 0;
-            color: #2e7d32;
+          font-size: 18px;
         }
         
         .modal-button {
-            background-color: #2e7d32;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 20px;
+          font-size: 14px;
+          padding: 8px 16px;
         }
-        
-        .modal-button:hover {
-            background-color: #225f26;
+        .modal-content{
+            margin-left: 5px;
+            margin-right: 5px;
         }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <!-- Success notification for subscription -->
-        <div id="successNotification" class="notification hidden">
-            <div>
-                <span class="success-icon">✓</span>
-                You have successfully subscribed
-            </div>
-            <button class="close-button" onclick="document.getElementById('successNotification').classList.add('hidden')">✕</button>
+      <!-- Success notification for subscription -->
+      <div id="successNotification" class="notification hidden">
+        <div>
+          <span class="success-icon">✓</span>
+          You have successfully subscribed
         </div>
-        
-        <!-- Unsubscribe section -->
-        <div id="unsubscribeSection" class="unsubscribe-section">
-            <h2>Do you want to unsubscribe from our messages?</h2>
-            <p>You'll stop receiving messages from us.</p>
-            <button class="unsubscribe-button" onclick="handleUnsubscribe()">Unsubscribe</button>
-        </div>
-        
-        <!-- Subscribe section (initially hidden) -->
-        <div id="subscribeSection" class="unsubscribe-section hidden">
-            <h2>Subscribe to our messages</h2>
-            <p>Stay updated with our latest news and offers.</p>
-            <button class="subscribe-button" onclick="handleSubscribe()">Subscribe</button>
-        </div>
+        <button
+          class="close-button"
+          onclick="document.getElementById('successNotification').classList.add('hidden')"
+        >
+          ✕
+        </button>
+      </div>
+
+      <!-- Unsubscribe section -->
+      <div id="unsubscribeSection" class="unsubscribe-section">
+        <h2>Do you want to unsubscribe from our messages?</h2>
+        <p>You'll stop receiving messages from us.</p>
+        <button class="unsubscribe-button" onclick="handleUnsubscribe()">
+          Unsubscribe
+        </button>
+      </div>
+
+      <!-- Subscribe section (initially hidden) -->
+      <div id="subscribeSection" class="unsubscribe-section hidden">
+        <h2>Subscribe to our messages</h2>
+        <p>Stay updated with our latest news and offers.</p>
+        <button class="subscribe-button" onclick="handleSubscribe()">
+          Subscribe
+        </button>
+      </div>
     </div>
-    
+
     <!-- Toast notification -->
     <div id="toast" class="toast">
-        You have been unsubscribed from our messages.
+      You have been unsubscribed from our messages.
     </div>
-    
+
     <!-- Modal popup for subscription confirmation -->
     <div id="subscribeModal" class="modal">
-        <div class="modal-content">
-            <h3 class="modal-title">Subscription Confirmed!</h3>
-            <p>Thank you for subscribing to our messages. You'll now receive our latest updates and offers.</p>
-            <button class="modal-button" onclick="closeModal()">Close</button>
-        </div>
+      <div class="modal-content">
+        <h3 class="modal-title">Subscription Confirmed!</h3>
+        <p>
+          Thank you for subscribing to our messages. You'll now receive our
+          latest updates and offers.
+        </p>
+        <button class="modal-button" onclick="closeModal()">Close</button>
+      </div>
     </div>
 
     <script>
-        function handleUnsubscribe() {
-            // Hide unsubscribe section
-            document.getElementById('unsubscribeSection').classList.add('hidden');
-            // Show subscribe section
-            document.getElementById('subscribeSection').classList.remove('hidden');
-            // Hide success notification if it's visible
-            document.getElementById('successNotification').classList.add('hidden');
-            
-            // Show toast notification
-            showToast();
+      function handleUnsubscribe() {
+        // Hide unsubscribe section
+        document.getElementById("unsubscribeSection").classList.add("hidden");
+        // Show subscribe section
+        document.getElementById("subscribeSection").classList.remove("hidden");
+        // Hide success notification if it's visible
+        document.getElementById("successNotification").classList.add("hidden");
+
+        // Show toast notification
+        showToast();
+      }
+
+      function handleSubscribe() {
+        // Hide subscribe section
+        document.getElementById("subscribeSection").classList.add("hidden");
+        // Show unsubscribe section
+        document
+          .getElementById("unsubscribeSection")
+          .classList.remove("hidden");
+        // Show success notification
+        document
+          .getElementById("successNotification")
+          .classList.remove("hidden");
+
+        // Show popup modal
+        showModal();
+      }
+
+      function showToast() {
+        const toast = document.getElementById("toast");
+        toast.classList.add("show");
+
+        // Hide toast after 3 seconds
+        setTimeout(function () {
+          toast.classList.remove("show");
+        }, 3000);
+      }
+
+      function showModal() {
+        document.getElementById("subscribeModal").style.display = "flex";
+      }
+
+      function closeModal() {
+        document.getElementById("subscribeModal").style.display = "none";
+      }
+
+      // Close modal if user clicks outside of it
+      window.onclick = function (event) {
+        const modal = document.getElementById("subscribeModal");
+        if (event.target == modal) {
+          modal.style.display = "none";
         }
-        
-        function handleSubscribe() {
-            // Hide subscribe section
-            document.getElementById('subscribeSection').classList.add('hidden');
-            // Show unsubscribe section
-            document.getElementById('unsubscribeSection').classList.remove('hidden');
-            // Show success notification
-            document.getElementById('successNotification').classList.remove('hidden');
-            
-            // Show popup modal
-            showModal();
-        }
-        
-        function showToast() {
-            const toast = document.getElementById('toast');
-            toast.classList.add('show');
-            
-            // Hide toast after 3 seconds
-            setTimeout(function() {
-                toast.classList.remove('show');
-            }, 3000);
-        }
-        
-        function showModal() {
-            document.getElementById('subscribeModal').style.display = 'flex';
-        }
-        
-        function closeModal() {
-            document.getElementById('subscribeModal').style.display = 'none';
-        }
-        
-        // Close modal if user clicks outside of it
-        window.onclick = function(event) {
-            const modal = document.getElementById('subscribeModal');
-            if (event.target == modal) {
-                modal.style.display = 'none';
-            }
-        }
+      };
     </script>
-</body>
+  </body>
 </html>
