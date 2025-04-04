@@ -1,0 +1,7 @@
+Push Code in github
+
+npm install -g vercel
+vercel login
+vercel
+
+vercel --prod
